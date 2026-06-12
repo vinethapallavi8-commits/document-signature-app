@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:3002/api"
+  baseURL: "https://docsign-backend-xnsr.onrender.com/api"
 });
 
 API.interceptors.request.use((req) => {

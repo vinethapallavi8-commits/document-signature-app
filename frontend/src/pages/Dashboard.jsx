@@ -40,7 +40,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:3002/api/sign/${docId}/reject`,
+        `https://docsign-backend-xnsr.onrender.com/api/sign/${docId}/reject`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -58,7 +58,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
       <nav className="bg-indigo-600 text-white px-8 py-4 flex justify-between items-center shadow">
         <h1 className="text-xl font-bold">📄 DocSign</h1>
         <button onClick={() => { localStorage.removeItem("token"); window.location.href = "/login"; }}
@@ -68,7 +67,6 @@ export default function Dashboard() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Upload Section */}
         <div className="bg-white rounded-2xl shadow p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Upload New Document</h2>
           <div className="flex items-center gap-4">
@@ -82,7 +80,6 @@ export default function Dashboard() {
           {message && <p className="mt-3 text-green-600">{message}</p>}
         </div>
 
-        {/* Documents List */}
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Documents</h2>
         {documents.length === 0 ? (
           <div className="bg-white rounded-2xl shadow p-8 text-center text-gray-400">
@@ -119,7 +116,7 @@ export default function Dashboard() {
               </div>
               {selectedDoc?._id === doc._id && (
                 <div className="mt-4 border border-gray-200 rounded-xl overflow-hidden">
-                  <DocumentView fileUrl={`http://localhost:3002/uploads/${doc.filename}`} />
+                  <DocumentView fileUrl={`https://docsign-backend-xnsr.onrender.com/uploads/${doc.filename}`} />
                 </div>
               )}
             </div>
