@@ -5,6 +5,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const signRoutes = require("./routes/signRoutes");
+const pdfRoutes = require("./routes/pdfRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/sign", signRoutes);
+app.use("/api/pdf", pdfRoutes);
 app.use("/uploads", express.static("uploads"));
 
 mongoose.connect(process.env.MONGODB_URI)

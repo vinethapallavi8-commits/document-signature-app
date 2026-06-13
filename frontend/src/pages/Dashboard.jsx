@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [selectedDoc, setSelectedDoc] = useState(null);
+  const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => { fetchDocuments(); }, []);
@@ -56,6 +57,11 @@ export default function Dashboard() {
     return "text-yellow-600 bg-yellow-100";
   };
 
+  const filteredDocuments = documents.filter((doc) => {
+    if (filter === "all") return true;
+    return doc.status === filter;
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-indigo-600 text-white px-8 py-4 flex justify-between items-center shadow">
@@ -67,6 +73,7 @@ export default function Dashboard() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Upload Section */}
         <div className="bg-white rounded-2xl shadow p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Upload New Document</h2>
           <div className="flex items-center gap-4">
@@ -80,13 +87,33 @@ export default function Dashboard() {
           {message && <p className="mt-3 text-green-600">{message}</p>}
         </div>
 
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Documents</h2>
-        {documents.length === 0 ? (
+        {/* Filter Buttons */}
+        <div className="flex gap-3 mb-6">
+          {["all", "pending", "signed", "rejected"].map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilter(status)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition ${
+                filter === status
+                  ? "bg-indigo-600 text-white"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              }`}>
+              {status === "all" ? "All Documents" : status}
+            </button>
+          ))}
+        </div>
+
+        {/* Documents List */}
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          Your Documents
+          <span className="ml-2 text-sm text-gray-400">({filteredDocuments.length} found)</span>
+        </h2>
+        {filteredDocuments.length === 0 ? (
           <div className="bg-white rounded-2xl shadow p-8 text-center text-gray-400">
-            No documents uploaded yet.
+            No {filter === "all" ? "" : filter} documents found.
           </div>
         ) : (
-          documents.map((doc) => (
+          filteredDocuments.map((doc) => (
             <div key={doc._id} className="bg-white rounded-2xl shadow p-6 mb-4">
               <div className="flex justify-between items-start">
                 <div>
@@ -97,7 +124,7 @@ export default function Dashboard() {
                   {doc.status}
                 </span>
               </div>
-              <div className="flex gap-3 mt-4">
+              <div className="flex gap-3 mt-4 flex-wrap">
                 <button
                   onClick={() => setSelectedDoc(selectedDoc?._id === doc._id ? null : doc)}
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition">
@@ -113,6 +140,15 @@ export default function Dashboard() {
                   className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition">
                   Reject
                 </button>
+                {doc.status === "signed" && (
+                  
+                    href={`https://docsign-backend-xnsr.onrender.com/api/pdf/${doc._id}/download`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition">
+                    Download Signed PDF
+                  </a>
+                )}
               </div>
               {selectedDoc?._id === doc._id && (
                 <div className="mt-4 border border-gray-200 rounded-xl overflow-hidden">
