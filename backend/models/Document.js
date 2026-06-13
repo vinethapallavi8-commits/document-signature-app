@@ -17,6 +17,8 @@ const documentSchema = new mongoose.Schema({
   signedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   signedAt: { type: Date },
   signature: { type: String },
+  shareToken: { type: String },
+  shareTokenExpiry: { type: Date },
   auditTrail: [
     {
       action: { type: String },

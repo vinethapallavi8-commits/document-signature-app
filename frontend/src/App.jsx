@@ -3,6 +3,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import SignDocument from "./pages/SignDocument";
+import PublicSign from "./pages/PublicSign";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/sign/:id" element={<SignDocument />} />
+        <Route path="/public-sign/:token" element={<PublicSign />} />
       </Routes>
     </BrowserRouter>
   );

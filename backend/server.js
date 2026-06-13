@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const signRoutes = require("./routes/signRoutes");
 const pdfRoutes = require("./routes/pdfRoutes");
+const shareRoutes = require("./routes/shareRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/sign", signRoutes);
 app.use("/api/pdf", pdfRoutes);
+app.use("/api/share", shareRoutes);
 app.use("/uploads", express.static("uploads"));
 
 mongoose.connect(process.env.MONGODB_URI)

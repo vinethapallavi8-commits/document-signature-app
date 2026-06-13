@@ -51,6 +51,21 @@ export default function Dashboard() {
     }
   };
 
+  const handleShare = async (docId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `https://docsign-backend-xnsr.onrender.com/api/share/${docId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert(`Share link copied!\n\n${res.data.shareLink}`);
+      navigator.clipboard.writeText(res.data.shareLink);
+    } catch (err) {
+      alert(err.response?.data?.message || "Share failed");
+    }
+  };
+
   const statusColor = (status) => {
     if (status === "signed") return "text-green-600 bg-green-100";
     if (status === "rejected") return "text-red-600 bg-red-100";
@@ -155,6 +170,12 @@ export default function Dashboard() {
                   onClick={() => handleReject(doc._id)}
                   className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition">
                   Reject
+                </button>
+
+                <button
+                  onClick={() => handleShare(doc._id)}
+                  className="bg-purple-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-600 transition">
+                  Share Link
                 </button>
 
                 {doc.status === "signed" && (
